@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 class ExitMapSensor extends GameDecoration with Sensor {
   final String id;
   bool hasContact = false;
-  final ValueChanged<String> exitMap;
+  final Function exitMap;
 
   ExitMapSensor(this.id, Vector2 position, Vector2 size, this.exitMap)
       : super(

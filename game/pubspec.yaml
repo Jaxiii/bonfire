@@ -50,5 +50,5 @@ flutter:
     - assets/images/tiled/
     - assets/images/tiled/tileset/
     - assets/images/itens/
-    - assets/multi_scenario/
+    - assets/images/tile_random/
 

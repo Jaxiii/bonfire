@@ -90,8 +90,8 @@ class OtherPlayerController extends StateController<OtherPlayer> {
   void idleServer(Message message) {
     if (component != null && message.idPlayer == component!.id) {
       isIdle = true;
-      component!.lastDirection = message.direction.toDirection();
-      direction = message.direction.toDirection();
+      component!.lastDirection = message.direction!.toDirection();
+      direction = message.direction!.toDirection();
     }
   }
 
@@ -99,10 +99,7 @@ class OtherPlayerController extends StateController<OtherPlayer> {
     if (component != null && message.idPlayer == component!.id) {
       isIdle = false;
       component!.position = message.position!;
-      direction = message.direction.toDirection();
+      direction = message.direction!.toDirection();
     }
   }
 }
-
-//92e31e80-9bfb-1cca-9cfd-974838f8cb67 - X
-//fb52ef80-9c3d-1cca-b96c-0595266ade97

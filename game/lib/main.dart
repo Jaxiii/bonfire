@@ -14,7 +14,7 @@ import 'network/message_service.dart';
 import 'network/websocket_service.dart';
 import 'package:solana_wallet_adapter/solana_wallet_adapter.dart';
 
-import 'tiled_map/multi_scenario2.dart';
+import 'tiled_map/multi_scenario.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

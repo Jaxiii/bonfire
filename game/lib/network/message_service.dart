@@ -21,15 +21,14 @@ class MessageService {
     Function(Message) onUpdateAction,
   ) {
     _onActions.add(((message) {
+      print(message.toJson());
       if (message.action == action) {
-        print(message.action);
-        print(message.idPlayer);
         onUpdateAction(message);
       }
     }));
   }
 
-  void init() async {
+  Future<void> init() async {
     await websocket.initConnection();
     await websocket.broadcastNotifications(onReceive: (json) {
       final message = Message.fromJson(json);

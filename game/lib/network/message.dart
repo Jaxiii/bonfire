@@ -4,20 +4,23 @@ class Message {
   Message({
     required this.idPlayer,
     required this.action,
-    required this.direction,
+    this.direction,
+    this.randomSeed,
     this.position,
   });
 
   final String idPlayer;
   final String action;
-  final String direction;
+  final String? direction;
   final Vector2? position;
+  final String? randomSeed;
 
   Map<String, dynamic> toJson() {
     return {
       'id': idPlayer,
       'action': action,
       'direction': direction,
+      'randomSeed': randomSeed,
       'position': position != null
           ? {
               'x': position!.x,
@@ -31,6 +34,7 @@ class Message {
     return Message(
       idPlayer: json['id'] ?? '',
       action: json['action'] ?? '',
+      randomSeed: json['randomSeed'] ?? '',
       direction: json['direction'] ?? '',
       position: json['position'] != null
           ? Vector2(
@@ -49,6 +53,8 @@ class ActionMessage {
   static const String idle = "IDLE";
   static const String attack = "ATTACK";
   static const String disconnect = "DISCONNECT";
+  static const String connectToLevel = "CONNECT_TO_LEVEL";
+  static const String levelChange = "LEVEL_CHANGE";
 }
 
 class DirectionMessage {

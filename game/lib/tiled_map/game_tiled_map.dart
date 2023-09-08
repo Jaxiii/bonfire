@@ -24,13 +24,20 @@ import '../shared/other/other_player.dart';
 import '../utils/enums/map_id_enum.dart';
 import '../utils/enums/show_in_enum.dart';
 import '../utils/sensors/exit_map_sensor.dart';
-import 'multi_scenario2.dart';
+import 'multi_scenario.dart';
 
 class GameTiledMap extends StatefulWidget {
   final int map;
   final ShowInEnum showInEnum;
+  final String id;
+  final MessageService messageService;
 
-  const GameTiledMap({Key? key, this.map = 1, required this.showInEnum})
+  const GameTiledMap(
+      {Key? key,
+      this.map = 1,
+      required this.showInEnum,
+      required this.id,
+      required this.messageService})
       : super(key: key);
 
   @override
@@ -39,16 +46,14 @@ class GameTiledMap extends StatefulWidget {
 
 class _GameTiledMapState extends State<GameTiledMap> {
   late final GameController gameController;
-  late final MessageService messageService;
+  late final MessageService messageService = widget.messageService;
 
-  late final String id;
+  late final String id = widget.id;
 
   @override
   void initState() {
-    id = const Uuid().v1();
     gameController = BonfireInjector.instance.get<GameController>();
-    messageService = BonfireInjector.instance.get<MessageService>();
-    messageService.init();
+    messageService.onListen(ActionMessage.levelChange, _exitInstance);
     messageService.onListen(ActionMessage.enemyInvocation, _addEnemy);
     messageService.onListen(
         ActionMessage.previouslyEnemyConnected, _addEnemyBeforeYourLogin);
@@ -57,17 +62,14 @@ class _GameTiledMapState extends State<GameTiledMap> {
 
   @override
   void dispose() {
-    messageService.dispose();
     super.dispose();
   }
 
   void _addEnemy(Message message) {
-    print('message.idPlayer');
-    print(message.idPlayer);
     final enemy = OtherPlayer(
       id: message.idPlayer,
       position: message.position!,
-      direction: message.direction.toDirection(),
+      direction: message.direction!.toDirection(),
     );
     gameController.addGameComponent(enemy);
     messageService.send(
@@ -90,7 +92,7 @@ class _GameTiledMapState extends State<GameTiledMap> {
       final enemy = OtherPlayer(
         id: message.idPlayer,
         position: message.position!,
-        direction: message.direction.toDirection(),
+        direction: message.direction!.toDirection(),
       );
       gameController.addGameComponent(enemy);
     }
@@ -156,7 +158,7 @@ class _GameTiledMapState extends State<GameTiledMap> {
           ),
           interface: KnightInterface(),
           map: WorldMapByTiled(
-            'tiled/map.json',
+            'tiled/map2.json',
             forceTileSize: Vector2(DungeonMap.tileSize, DungeonMap.tileSize),
             objectsBuilder: {
               'goblin': (properties) => Goblin(properties.position),
@@ -207,9 +209,14 @@ class _GameTiledMapState extends State<GameTiledMap> {
     );
   }
 
-  void _exitMap(String value) {
-    if (value == 'sensorRight') {
+  void _exitMap(String action) {
+    print('exit');
+    if (action == 'sensorRight') {
       selectMap(MapBiomeId.biome2);
     }
+  }
+
+  void _exitInstance(Message message) {
+    _exitMap('sensorRight');
   }
 }

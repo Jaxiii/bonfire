@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 import '../../shared/player/knight.dart';
 import '../tiled_map/dungeon_map.dart';
-import '../tiled_map/multi_scenario2.dart';
+import '../tiled_map/multi_scenario.dart';
 import '../utils/constants/game_consts.dart';
 import '../utils/enums/map_id_enum.dart';
 import '../utils/enums/show_in_enum.dart';

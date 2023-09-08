@@ -1,9 +1,13 @@
+import 'package:bonfire/bonfire.dart';
+import 'package:example/tiled_map/random_map_game.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 import '../maps/map_biome_2.dart';
+import '../network/message.dart';
+import '../network/message_service.dart';
 import '../utils/enums/map_id_enum.dart';
 import '../utils/enums/show_in_enum.dart';
 import 'game_tiled_map.dart';
-import 'game_tiled_map2.dart';
 
 // For sake of simplicity, we are using global variables here
 // But avoid using global variables in your production code, this is not
@@ -22,11 +26,20 @@ class _MultiScenarioState extends State<MultiScenario2> {
   @override
   void dispose() {
     currentMapBiomeId = MapBiomeId.none;
+    messageService.dispose();
     super.dispose();
   }
 
+  late final GameController gameController;
+  late final MessageService messageService;
+  late final String player_id;
   @override
   void initState() {
+    player_id = const Uuid().v1();
+    gameController = BonfireInjector.instance.get<GameController>();
+    messageService = BonfireInjector.instance.get<MessageService>();
+    messageService.init();
+    super.initState();
     selectMap = (MapBiomeId id) {
       setState(() {
         if (id == MapBiomeId.none) {
@@ -39,16 +52,27 @@ class _MultiScenarioState extends State<MultiScenario2> {
     super.initState();
   }
 
-  Widget _renderWidget() {
-    print('render');
-
+  Widget _renderWidget(String? id) {
     switch (currentMapBiomeId) {
       case MapBiomeId.biome1:
-        return const GameTiledMap2(showInEnum: ShowInEnum.right);
+        return GameTiledMap(
+          showInEnum: ShowInEnum.right,
+          id: id!,
+          messageService: messageService,
+        );
       case MapBiomeId.biome2:
-        return const GameTiledMap(showInEnum: ShowInEnum.right);
+        return RandomMapGame(
+          size: Vector2(150, 150),
+          seed: 1936,
+          id: id!,
+          messageService: messageService,
+        );
       default:
-        return const GameTiledMap2(showInEnum: ShowInEnum.right);
+        return GameTiledMap(
+          showInEnum: ShowInEnum.right,
+          id: id!,
+          messageService: messageService,
+        );
     }
   }
 
@@ -59,7 +83,7 @@ class _MultiScenarioState extends State<MultiScenario2> {
       switchInCurve: Curves.easeOutCubic,
       transitionBuilder: (Widget child, Animation<double> animation) =>
           FadeTransition(opacity: animation, child: child),
-      child: _renderWidget(),
+      child: _renderWidget(player_id),
     );
   }
 }
