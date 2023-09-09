@@ -1,7 +1,7 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:example/tiled_map/dungeon_map.dart';
 import 'package:example/shared/util/common_sprite_sheet.dart';
-import 'package:example/shared/util/enemy_sprite_sheet.dart';
+import 'package:example/shared/util/other_sprite_sheet.dart';
 import 'package:flutter/material.dart';
 
 import 'goblin_controller.dart';
@@ -47,6 +47,7 @@ class Goblin extends SimpleEnemy
 
   @override
   void die() {
+    controller.respawnMany();
     super.die();
     gameRef.add(
       AnimatedObjectOnce(

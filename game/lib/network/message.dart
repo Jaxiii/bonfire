@@ -58,6 +58,8 @@ class ActionMessage {
   static const String disconnect = "DISCONNECT";
   static const String connectToLevel = "CONNECT_TO_LEVEL";
   static const String levelChange = "LEVEL_CHANGE";
+  static const String joinedGroup = "JOINED_GROUP";
+  static const String spawnEnemy = "SPAWN_ENEMY";
 }
 
 class DirectionMessage {

@@ -1,7 +1,10 @@
-import 'package:bonfire/bonfire.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:example/tiled_map/random_map_game.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
+
+import 'package:bonfire/bonfire.dart';
+
 import '../maps/map_biome_2.dart';
 import '../network/message.dart';
 import '../network/message_service.dart';
@@ -32,13 +35,18 @@ class _MultiScenarioState extends State<MultiScenario2> {
 
   late final GameController gameController;
   late final MessageService messageService;
-  late final String player_id;
+  late final String playerId;
   @override
   void initState() {
-    player_id = const Uuid().v1();
+    playerId = const Uuid().v1();
     gameController = BonfireInjector.instance.get<GameController>();
     messageService = BonfireInjector.instance.get<MessageService>();
     messageService.init();
+
+    messageService.onListen(
+      ActionMessage.joinedGroup,
+      _joinGroup,
+    );
     super.initState();
     selectMap = (MapBiomeId id) {
       setState(() {
@@ -50,6 +58,12 @@ class _MultiScenarioState extends State<MultiScenario2> {
       });
     };
     super.initState();
+  }
+
+  _joinGroup(Message message) {
+    BonfireInjector().put(
+      (i) => Group(id: message.randomSeed!),
+    );
   }
 
   Widget _renderWidget(String? id) {
@@ -78,12 +92,33 @@ class _MultiScenarioState extends State<MultiScenario2> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedSwitcher(
-      duration: const Duration(seconds: 1),
-      switchInCurve: Curves.easeOutCubic,
-      transitionBuilder: (Widget child, Animation<double> animation) =>
-          FadeTransition(opacity: animation, child: child),
-      child: _renderWidget(player_id),
+    return Column(
+      children: [
+        TextButton(
+          onPressed: () => BonfireInjector.instance.get<MessageService>().send(
+                Message(action: ActionMessage.spawnEnemy, idPlayer: playerId),
+              ),
+          child: const Text('Spawn Enemy'),
+        ),
+        SizedBox(
+          width: 590,
+          height: 590,
+          child: AnimatedSwitcher(
+            duration: const Duration(seconds: 1),
+            switchInCurve: Curves.easeOutCubic,
+            transitionBuilder: (Widget child, Animation<double> animation) =>
+                FadeTransition(opacity: animation, child: child),
+            child: _renderWidget(playerId),
+          ),
+        ),
+      ],
     );
   }
+}
+
+class Group {
+  String id;
+  Group({
+    required this.id,
+  });
 }

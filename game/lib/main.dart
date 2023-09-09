@@ -6,10 +6,9 @@ import 'package:example/shared/interface/bar_life_controller.dart';
 import 'package:example/shared/npc/critter/critter_controller.dart';
 import 'package:example/shared/other/other_player_controller.dart';
 import 'package:example/shared/player/knight_controller.dart';
-import 'package:example/tiled_map/game_tiled_map.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'network/message.dart';
 import 'network/message_service.dart';
 import 'network/websocket_service.dart';
 import 'package:solana_wallet_adapter/solana_wallet_adapter.dart';
@@ -24,6 +23,7 @@ void main() async {
   }
   final WebsocketService websocket = WebsocketService();
   BonfireInjector().putFactory((i) => GameController());
+
   BonfireInjector().putFactory((i) => GoblinController());
   BonfireInjector().putFactory((i) => CritterController());
   BonfireInjector().put((i) => BarLifeController());

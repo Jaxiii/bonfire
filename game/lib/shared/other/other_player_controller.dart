@@ -1,10 +1,8 @@
 import 'package:bonfire/bonfire.dart';
 import 'package:example/network/message_service.dart';
 import 'package:example/shared/util/common_sprite_sheet.dart';
-import 'package:example/shared/util/player_sprite_sheet.dart';
 
 import '../../network/message.dart';
-import '../util/enemy_sprite_sheet.dart';
 import 'other_player.dart';
 
 class OtherPlayerController extends StateController<OtherPlayer> {

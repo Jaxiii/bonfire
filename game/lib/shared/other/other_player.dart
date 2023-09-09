@@ -1,5 +1,5 @@
 import 'package:bonfire/bonfire.dart';
-import 'package:example/shared/util/enemy_sprite_sheet.dart';
+import 'package:example/shared/util/other_sprite_sheet.dart';
 
 import '../../tiled_map/dungeon_map.dart';
 import 'other_player_controller.dart';

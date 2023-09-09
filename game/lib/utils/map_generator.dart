@@ -6,6 +6,7 @@ import 'package:example/shared/player/knight.dart';
 import 'package:fast_noise/fast_noise.dart';
 import 'package:flutter/foundation.dart';
 
+import '../shared/enemy/goblin.dart';
 import '../tiled_map/decoration/tree.dart';
 import 'noise_generator.dart';
 
@@ -36,7 +37,9 @@ class MapGenerator {
   final double seed;
   final String id;
   final Vector2 size;
-  final List<GameComponent> _compList = [];
+  final List<GameComponent> _compList = [
+    Goblin(Vector2(32 * 10, 32 * 10)),
+  ];
   Vector2 _playerPosition = Vector2.zero();
 
   MapGenerator(this.size, this.tileSize, this.seed, this.id);

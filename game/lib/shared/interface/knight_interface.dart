@@ -77,7 +77,7 @@ class KnightInterface extends GameInterface {
         final v = gameRef.visibleComponentsByType<Goblin>();
         if (v.isNotEmpty) {
           enemyControlled = v.first;
-          enemyControlled?.controller.enableBehaviors = false;
+          //enemyControlled?.controller.enableBehaviors = false;
           gameRef.addJoystickObserver(
             enemyControlled!,
             cleanObservers: true,
@@ -90,7 +90,7 @@ class KnightInterface extends GameInterface {
           cleanObservers: true,
           moveCameraToTarget: true,
         );
-        enemyControlled?.controller.enableBehaviors = true;
+        //enemyControlled?.controller.enableBehaviors = true;
         enemyControlled = null;
       }
     }

@@ -218,13 +218,15 @@ class _GameTiledMapState extends State<GameTiledMap> {
   }
 
   void _exitMap(String action) {
-    print('exit');
     if (action == 'sensorRight') {
       selectMap(MapBiomeId.biome2);
+      messageService.send(
+        Message(
+          idPlayer: id,
+          action: ActionMessage.levelChange,
+          randomSeed: BonfireInjector.instance.get<Group>().id,
+        ),
+      );
     }
-  }
-
-  void _exitInstance(Message message) {
-    _exitMap('sensorRight');
   }
 }
