@@ -55,7 +55,7 @@ class _RandomMapGameState extends State<RandomMapGame> {
   @override
   void initState() {
     gameController = BonfireInjector.instance.get<GameController>();
-    messageService.onListen(ActionMessage.connectToLevel, _addEnemy);
+    messageService.onListen(ActionMessage.enemyInvocation, _addEnemy);
     messageService.onListen(
         ActionMessage.previouslyEnemyConnected, _addEnemyBeforeYourLogin);
     super.initState();
@@ -133,6 +133,7 @@ class _RandomMapGameState extends State<RandomMapGame> {
                 Message(
                   idPlayer: id,
                   action: ActionMessage.enemyInvocation,
+                  level: 'dg',
                   direction: DirectionMessage.right,
                   position: Vector2(
                     gameRef.player!.position.x,

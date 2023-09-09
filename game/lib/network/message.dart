@@ -1,24 +1,26 @@
 import 'package:bonfire/bonfire.dart';
 
 class Message {
-  Message({
-    required this.idPlayer,
-    required this.action,
-    this.direction,
-    this.randomSeed,
-    this.position,
-  });
+  Message(
+      {required this.idPlayer,
+      required this.action,
+      this.direction,
+      this.randomSeed,
+      this.position,
+      this.level});
 
   final String idPlayer;
   final String action;
   final String? direction;
   final Vector2? position;
   final String? randomSeed;
+  final String? level;
 
   Map<String, dynamic> toJson() {
     return {
       'id': idPlayer,
       'action': action,
+      'level': level,
       'direction': direction,
       'randomSeed': randomSeed,
       'position': position != null
@@ -34,6 +36,7 @@ class Message {
     return Message(
       idPlayer: json['id'] ?? '',
       action: json['action'] ?? '',
+      level: json['level'] ?? '',
       randomSeed: json['randomSeed'] ?? '',
       direction: json['direction'] ?? '',
       position: json['position'] != null

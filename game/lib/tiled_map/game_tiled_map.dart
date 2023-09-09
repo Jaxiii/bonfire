@@ -53,7 +53,6 @@ class _GameTiledMapState extends State<GameTiledMap> {
   @override
   void initState() {
     gameController = BonfireInjector.instance.get<GameController>();
-    messageService.onListen(ActionMessage.levelChange, _exitInstance);
     messageService.onListen(ActionMessage.enemyInvocation, _addEnemy);
     messageService.onListen(
         ActionMessage.previouslyEnemyConnected, _addEnemyBeforeYourLogin);
@@ -66,22 +65,30 @@ class _GameTiledMapState extends State<GameTiledMap> {
   }
 
   void _addEnemy(Message message) {
-    final enemy = OtherPlayer(
-      id: message.idPlayer,
-      position: message.position!,
-      direction: message.direction!.toDirection(),
-    );
-    gameController.addGameComponent(enemy);
-    messageService.send(
-      Message(
-        idPlayer: id,
-        action: ActionMessage.previouslyEnemyConnected,
-        direction: DirectionMessage.direction(
-          gameController.player!.lastDirection,
+    print(message.level);
+    if (message.level == 'main') {
+      final enemy = OtherPlayer(
+        id: message.idPlayer,
+        position: message.position!,
+        direction: message.direction!.toDirection(),
+      );
+      gameController.addGameComponent(enemy);
+      messageService.send(
+        Message(
+          idPlayer: id,
+          action: ActionMessage.previouslyEnemyConnected,
+          direction: DirectionMessage.direction(
+            gameController.player!.lastDirection,
+          ),
+          position: gameController.player!.position,
         ),
-        position: gameController.player!.position,
-      ),
-    );
+      );
+    } else {
+      OtherPlayer otherPlayer = gameController.gameRef
+          .componentsByType<OtherPlayer>()
+          .firstWhere((element) => element.id == message.idPlayer);
+      otherPlayer.die();
+    }
   }
 
   void _addEnemyBeforeYourLogin(Message message) {
@@ -109,6 +116,7 @@ class _GameTiledMapState extends State<GameTiledMap> {
             Message(
               idPlayer: id,
               action: ActionMessage.enemyInvocation,
+              level: 'main',
               direction: DirectionMessage.right,
               position: Vector2(
                 gameRef.player!.position.x,
